@@ -3,17 +3,17 @@ class ConverterController < ApplicationController
   end
 
   def convert
-    @params = params.permit(:type, :amount, :from, :to)    
+    @params = params.require(:converter).permit(:type, :amount, :from, :to)    
     
     respond_to do |format|
       format.js 
     end
     
-    converter = ConverterCaller.new(@params)
-    if converter.valid?
-      @result = converter.call(@params)
+    @converter = ConverterCaller.new(@params)
+    if @converter.valid?
+      @result = @converter.call(@params)
     else
-      @result = converter.errors.messages[:base]
+      @result = @converter.errors.messages[:base]
     end 
   end
 end

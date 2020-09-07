@@ -3,20 +3,20 @@ h3
 .col-md-8
   = form_with url: converter_convert_path do |form|
     .form-group
-      = label(:type, "Тип источника данных")
-      = form.select :type, options_for_select([ \
+      = label(:converter, :type, "Тип источника данных")
+      = select :converter, :type, options_for_select([ \
         ['Web API', 'web'], \
         ['файл *.json ','json'], \
         ['файл *.csv', 'csv']])        
     .form-group
-      = label(:amount, "Сумма")
-      = form.number_field :amount
+      = label(:converter, :amount, "Сумма")
+      = number_field :converter, :amount
     .form-group
-      = label(:from, "Исходная валюта")        
-      = form.text_field :from
+      = label(:converter, :from, "Исходная валюта")        
+      = text_field :converter, :from
     .form-group
-      = label(:to, "Конвертировать в")  
-      = form.text_field :to
+      = label(:converter, :to, "Конвертировать в")  
+      = text_field :converter, :to
     = submit_tag("Конвертировать")
 div
   h3#result
