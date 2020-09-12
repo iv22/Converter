@@ -18,8 +18,8 @@ class Converter
 
     def call(params)            
       data_source = params[:type] == 'web' ? WEB_SOURCE : "#{FILE_PATH}/data.#{params[:type]}"
-      data_clazz = DataFactory.for(params[:type])       
-      con = CurrencyConverter.new(data_clazz.get_data(data_source))
+      data_clazz = Converter::DataFactory.for(params[:type])       
+      con = Converter::CurrencyConverter.new(data_clazz.get_data(data_source))
       # byebug
       con.convert(params[:amount].to_i, params[:from], params[:to])[1].cents
     end

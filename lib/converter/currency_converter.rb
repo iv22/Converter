@@ -1,10 +1,7 @@
 # frozen_string_literal: true
 
-require_relative './data_utils'
-require_relative './data_provider'
-
 # This is currency converter
-class CurrencyConverter
+class Converter::CurrencyConverter
   attr_reader :data
 
   def initialize(data)

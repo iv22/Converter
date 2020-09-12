@@ -3,6 +3,22 @@
 require 'json'
 require 'csv'
 
+# It provides the suitable class by name
+class Converter::DataFactory
+  def self.for(type)
+    raise ArgumentError, "Parameter 'type' must be a string" if type.class != String
+
+    Object.const_get(type.capitalize + 'Data')
+  rescue ArgumentError => e
+    p e.message
+    nil
+  rescue NameError
+    p "Invalid parameter 'type' value. Available values: 'csv', 'json', 'web'" \
+      ' (case insensitive).'
+    nil
+  end
+end
+
 # It is abstract parent for the concrete class
 class AbstractData
   def self.get_data(_)
@@ -47,7 +63,7 @@ end
 class WebData < AbstractData
   def self.get_data(source)
     result = {}
-    DataUtils.get_raw_json(source).each do |i|
+    Converter::DataUtils.get_raw_json(source).each do |i|
       result[ i['Cur_Abbreviation'] ] = {
         'Cur_Scale' => i['Cur_Scale'],
         'Cur_Name' => i['Cur_Name'],
@@ -57,21 +73,5 @@ class WebData < AbstractData
     result
   rescue ArgumentError, SocketError, Errno::ENOENT, JSON::ParserError => e
     error_handler(e)
-  end
-end
-
-# It provides the suitable class by name
-class DataFactory
-  def self.for(type)
-    raise ArgumentError, "Parameter 'type' must be a string" if type.class != String
-
-    Object.const_get(type.capitalize + 'Data')
-  rescue ArgumentError => e
-    p e.message
-    nil
-  rescue NameError
-    p "Invalid parameter 'type' value. Available values: 'csv', 'json', 'web'" \
-      ' (case insensitive).'
-    nil
   end
 end

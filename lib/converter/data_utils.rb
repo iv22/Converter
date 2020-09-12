@@ -6,7 +6,7 @@ require 'json'
 require 'csv'
 
 # Data manipulation utilities
-module DataUtils
+module Converter::DataUtils
   def self.get_raw_json(source)
     json = URI.open(source).read
     # json = Net::HTTP.get(URI(source))
