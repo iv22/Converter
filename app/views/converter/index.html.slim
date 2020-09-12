@@ -1,22 +1,22 @@
 h3
   | Приложение для конверсии валют
 .col-md-8
-  = form_with url: converter_convert_path do |form|
+  = form_with model: @converter, url: converter_convert_path do |f|
     .form-group
-      = label(:converter, :type, "Тип источника данных")
-      = select :converter, :type, options_for_select([ \
+      = f.label(:type, "Тип источника данных")
+      = f.select :type, options_for_select([ \
         ['Web API', 'web'], \
         ['файл *.json ','json'], \
         ['файл *.csv', 'csv']])        
     .form-group
-      = label(:converter, :amount, "Сумма")
-      = number_field :converter, :amount
+      = f.label(:amount, "Сумма")
+      = f.number_field :amount
     .form-group
-      = label(:converter, :from, "Исходная валюта")        
-      = text_field :converter, :from
+      = f.label(:from, "Исходная валюта")        
+      = f.text_field :from
     .form-group
-      = label(:converter, :to, "Конвертировать в")  
-      = text_field :converter, :to
+      = f.label(:to, "Конвертировать в")  
+      = f.text_field :to
     = submit_tag("Конвертировать")
 div
   h3#result

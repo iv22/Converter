@@ -1,5 +1,6 @@
-class ConverterCaller
+class Converter
     include ActiveModel::Validations
+
     validates :type, presence: true
     validates :amount, presence: true, numericality: { only_integer: true, greater_than: 0 }
     validates :from, presence: true
@@ -12,11 +13,10 @@ class ConverterCaller
     FILE_PATH = Rails.root.join('app', 'storage')
 
     def initialize(params = {})
-      params.each {|name, value| send("#{name}=", value)}      
+      params.each {|name, value| send("#{name}=", value)}     
     end
 
-    def call(params)      
-      # validates :params[:amount], presense: true, numericality: {only_integer: true}
+    def call(params)            
       data_source = params[:type] == 'web' ? WEB_SOURCE : "#{FILE_PATH}/data.#{params[:type]}"
       data_clazz = DataFactory.for(params[:type])       
       con = CurrencyConverter.new(data_clazz.get_data(data_source))

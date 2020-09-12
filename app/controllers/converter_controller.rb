@@ -1,19 +1,22 @@
 class ConverterController < ApplicationController
-  def index
+  attr_reader :converter
+
+  def index    
+    @converter = Converter.new()
   end
 
   def convert
     @params = params.require(:converter).permit(:type, :amount, :from, :to)    
-    
+    p @params 
     respond_to do |format|
       format.js 
     end
     
-    @converter = ConverterCaller.new(@params)
+    @converter = Converter.new(@params)
     if @converter.valid?
       @result = @converter.call(@params)
     else
-      @result = @converter.errors.messages[:base]
+      @result = @converter.errors.messages
     end 
   end
 end

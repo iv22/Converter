@@ -1,0 +1,9 @@
+ru:
+  activemodel:
+    errors:
+      models:
+        converter: 
+          attributes:
+            amount:
+              blank: "Исходная валюта не указана"
+              not_a_number: "Нее, число хочу"
