@@ -32,6 +32,11 @@ class Converter::CurrencyConverter
     p e.message
   end
 
+  def format_convert(money_from, money_to)
+    "#{money_from.format} => #{money_to.format} :" \
+      "(#{money_from.currency.name} => #{money_to.currency.name})"
+  end
+
   private
 
   def validate?(args)
@@ -56,11 +61,6 @@ class Converter::CurrencyConverter
       [(args[:currency_to].upcase == 'BYN') || @data.key?(args[:currency_to].upcase),
        "Currency '#{args[:currency_to].upcase}' not found"]
     ].reject { |cond| cond[0] }.map { |i| i[1] }
-  end
-
-  def format_convert(money_from, money_to)
-    "#{money_from.format} => #{money_to.format} :" \
-      "(#{money_from.currency.name} => #{money_to.currency.name})"
   end
 
   def get_currency_params(currency)

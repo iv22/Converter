@@ -21,6 +21,7 @@ class Converter
       data_clazz = Converter::DataFactory.for(params[:type])       
       con = Converter::CurrencyConverter.new(data_clazz.get_data(data_source))
       # byebug
-      con.convert(params[:amount].to_i, params[:from], params[:to])[1].cents
+      result = con.convert(params[:amount].to_i, params[:from], params[:to])
+      result = "#{ result[1].cents } cents | #{ con.format_convert(*result) }"
     end
 end
