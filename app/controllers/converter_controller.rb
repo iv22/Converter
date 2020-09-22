@@ -17,5 +17,6 @@ class ConverterController < ApplicationController
     else
       @result = @converter.errors.messages.inject('') {|out, msg| out + msg[1].join(' | ') + '\n' }
     end 
+    ActionCable.server.broadcast('currency_news', result: @result, time: Time.current)
   end
 end

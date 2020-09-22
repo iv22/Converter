@@ -2,10 +2,9 @@ h3
   | Приложение для конверсии валют
 .col-md-8
   = form_with model: @converter, url: converter_convert_path do |f|
-    - if @converter.errors.any?
-      - @converter.errors.messages.each do |msg|
-        .alert
-          = msg
+    div
+      h4 Произведенные конверсии:
+      h5#broadcast
     .form-group
       = f.label(:type, "Тип источника данных")
       = f.select :type, options_for_select([ \
