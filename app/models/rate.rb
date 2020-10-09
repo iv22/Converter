@@ -14,9 +14,7 @@
 #
 #  index_rates_on_name  (name) UNIQUE
 #
-class Rate < ApplicationRecord
-
-  WEB_SOURCE = 'https://www.nbrb.by/api/exrates/rates?periodicity=0'
+class Rate < ApplicationRecord 
   
   def self.fill_data
     data_clazz = Converter::DataFactory.for('web')       
@@ -29,5 +27,21 @@ class Rate < ApplicationRecord
         scale: attr['Cur_Scale']        
       )
     end
+  end
+
+  def self.load
+    ActiveRecord::Base.transaction do
+      Rate.delete_all
+      Converter::DataUtils.get_raw_json(ENV['WEB_SOURCE']).each do |cur|
+        Rate.create(
+          name: cur['Cur_Name'],
+          abbreviation: cur['Cur_Abbreviation'],
+          scale: cur['Cur_Scale'],
+          rate: cur['Cur_OfficialRate']
+        )
+      end
+    end
+  rescue ArgumentError, SocketError, Errno::ENOENT, JSON::ParserError => e
+    puts(e)
   end
 end

@@ -16,7 +16,7 @@ class Converter::CurrencyConverter
     args = method(__method__).parameters.map do |arg|
       [arg[1], binding.local_variable_get(arg[1].to_s)]
     end
-
+    
     return nil unless validate?(args.to_h)
 
     cur_from = currency_from.upcase

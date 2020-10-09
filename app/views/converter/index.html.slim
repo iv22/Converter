@@ -2,12 +2,10 @@ h3
   | Приложение для конверсии валют
 .col-md-8
   = form_with model: @converter, url: converter_convert_path do |f|
-    div
-      h4 Произведенные конверсии:
-      h5#broadcast
     .form-group
       = f.label(:type, "Тип источника данных")
       = f.select :type, options_for_select([ \
+        ['взять из БД', 'DB'], \
         ['Web API', 'web'], \
         ['файл *.json ','json'], \
         ['файл *.csv', 'csv']])        
@@ -24,3 +22,6 @@ h3
 div
   h3
     pre#result
+div
+  h4 Произведенные конверсии:
+  h5#broadcast    

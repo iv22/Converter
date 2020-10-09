@@ -16,12 +16,25 @@ class Converter
       params.each {|name, value| send("#{name}=", value)}     
     end
 
-    def call(params)            
-      data_source = params[:type] == 'web' ? WEB_SOURCE : "#{FILE_PATH}/data.#{params[:type]}"
-      data_clazz = Converter::DataFactory.for(params[:type])       
-      con = Converter::CurrencyConverter.new(data_clazz.get_data(data_source))
+    def call(params)                  
+      con = Converter::CurrencyConverter.new(get_data(params[:type]))
       # byebug
       result = con.convert(params[:amount].to_i, params[:from], params[:to])
       result = "#{ result[1].cents } cents | #{ con.format_convert(*result) }"
+    end    
+
+    def get_data(type)
+      if type == 'DB'
+        result = {}
+        Rate.all.each {|cur| result[cur.abbreviation] = {
+          'Cur_Scale' => cur.scale, 
+          'Cur_name' => cur.name,
+          'Cur_OfficialRate' => cur.rate}}
+        result
+      else  
+        data_source = type == 'web' ? WEB_SOURCE : "#{FILE_PATH}/data.#{type}"
+        data_clazz = Converter::DataFactory.for(type)
+        data_clazz.get_data(data_source)
+      end
     end
 end

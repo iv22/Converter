@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  get 'rate/index'
+  get 'rate', to: 'rate#index'
+  get 'rate/load'
+  post 'rate/load'
   root to: 'converter#index'
   get 'converter/index'
   post 'converter/convert'
